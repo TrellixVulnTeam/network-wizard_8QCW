@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import {PythonShell} from 'python-shell';
 PythonShell.run(`${__dirname}/py_scripts/init.py`, null, function (err) {
-  if (err) throw err;
+  if (err) console.log(err);
   console.log('finished');
 });
 
