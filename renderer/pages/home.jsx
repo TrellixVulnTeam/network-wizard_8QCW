@@ -1,103 +1,62 @@
 import React from 'react';
 import Head from 'next/head'
 import Link from 'next/link'
+import {nugget} from './nugget.js'
+import {PythonShell} from 'python-shell';
 
+
+let options = {
+  mode: 'text',
+  pythonOptions: ['-u'], // get print results in real-time
+  scriptPath: `${process.cwd()}/py_scripts/`,
+  args: ['value1', 'value2', 'value3']
+};
+ 
+PythonShell.run('init.py', options, function (err, results) {
+  if (err) console.log(err);
+  // results is an array consisting of messages collected during execution
+  console.log('results: %j', results);
+});
+
+
+var os 	= require('os-utils');
 
 import {
   Layout,
-  Form,
-  Select,
-  InputNumber,
-  DatePicker,
-  Switch,
-  Slider,
+  Result,
   Button,
 } from 'antd';
 
 import 'antd/dist/antd.css';
-
+import styles from  './main.css'
 const {
   Header,
   Content,
 } = Layout;
-const { Item: FormItem } = Form;
-const { Option } = Select;
 
-const Home = () => {
-  return (
+export default class Home extends React.PureComponent{
+  render(){
+    return(
     <React.Fragment>
       <Head>
-        <title>Home - Nextron (with-javascript-ant-design)</title>
+        <title>Network Wizard</title>
       </Head>
   
-      <Header>
-        <Link href="/next">
-          <a>Go to next page</a>
-        </Link>
+      <Header style={{ color: '#fff!important', backgroundColor: '#2D2D2D' }}>
+        <h3 style={{ color: '#fff' }}>Network Wizard</h3>
       </Header>
-  
-      <Content style={{ padding: 48 }}>
-        <Form layout='horizontal'>
-          <FormItem
-            label='Input Number'
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <InputNumber size='large' min={1} max={10} style={{ width: 100 }} defaultValue={3} name='inputNumber' />
-            <a href='#'>Link</a>
-          </FormItem>
-  
-          <FormItem
-            label='Switch'
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <Switch defaultChecked name='switch' />
-          </FormItem>
-  
-          <FormItem
-            label='Slider'
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <Slider defaultValue={70} />
-          </FormItem>
-  
-          <FormItem
-            label='Select'
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <Select size='large' defaultValue='lucy' style={{ width: 192 }} name='select'>
-              <Option value='jack'>jack</Option>
-              <Option value='lucy'>lucy</Option>
-              <Option value='disabled' disabled>disabled</Option>
-              <Option value='yiminghe'>yiminghe</Option>
-            </Select>
-          </FormItem>
-  
-          <FormItem
-            label='DatePicker'
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <DatePicker name='startDate' />
-          </FormItem>
-          <FormItem
-            style={{ marginTop: 48 }}
-            wrapperCol={{ span: 8, offset: 8 }}
-          >
-            <Button size='large' type='primary' htmlType='submit'>
-            OK
-            </Button>
-            <Button size='large' style={{ marginLeft: 8 }}>
-            Cancel
-            </Button>
-          </FormItem>
-        </Form>
+      <Content style={{ padding: 48, textAlign: 'center', alignContent: 'center' }}>
+        <div className={styles.brand}>
+         <img style={{ width: '200px' }} src={nugget} />
+         <h1>SPACY NUGGET</h1>
+        </div>
+        <Button> Clients List </Button>
+        <Button>  </Button>
+        {os.platform()}
+        
       </Content>
     </React.Fragment>
-  );
-};
+    )
+  }
+}
 
-export default Home;
