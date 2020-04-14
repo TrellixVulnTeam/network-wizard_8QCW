@@ -1,6 +1,14 @@
 import React from 'react';
-import Head from 'next/Head';
-import Link from 'next/Link';
+import Head from 'next/head'
+import Link from 'next/link'
+import {PythonShell} from 'python-shell';
+PythonShell.run(`${__dirname}/py_scripts/init.py`, null, function (err) {
+  if (err) throw err;
+  console.log('finished');
+});
+
+var os 	= require('os-utils');
+
 import {
   Layout,
   Result,
@@ -28,11 +36,13 @@ const Next = () => {
       </Header>
       <Content style={{ padding: 48, textAlign: 'center', alignContent: 'center' }}>
         <div className={styles.brand}>
-         <img style={{ width: '200px' }} src="https://media1.tenor.com/images/dd7aad2b40860796fa6840cc90103501/tenor.gif" />
+         <img style={{ width: '200px' }} src="./images/nugget.gif" />
          <h1>SPACY NUGGET</h1>
         </div>
         <Button> Clients List </Button>
         <Button>  </Button>
+        {os.platform()}
+        
       </Content>
     </React.Fragment>
   );
