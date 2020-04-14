@@ -1,0 +1,22 @@
+{
+  "name": "network-wizard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./app.js",
+  "scripts": {
+    "dev": "electron .",
+    "build": "next build",
+    "start": "NODE_ENV=production electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^4.1.3",
+    "electron": "8.2.2",
+    "next": "9.3.4",
+    "python-shell": "^1.0.8",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "require": "^2.4.20"
+  }
+}
