@@ -2,7 +2,7 @@
   "private": true,
   "name": "network-wizard",
   "description": "Manage clients like a wizard!",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "srgooglo",
   "main": "app/background.js",
   "scripts": {
@@ -11,10 +11,17 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.0.6",
+    "async": "^3.2.0",
+    "classnames": "^2.2.6",
     "electron-serve": "^0.4.1",
     "electron-store": "^5.1.1",
+    "localforage": "^1.7.3",
+    "node-localstorage": "^2.1.6",
     "os-utils": "0.0.14",
-    "python-shell": "^1.0.8"
+    "progress": "^2.0.3",
+    "python-shell": "^1.0.8",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
