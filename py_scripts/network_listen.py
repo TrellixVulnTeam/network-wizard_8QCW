@@ -4,10 +4,20 @@ import json
 import sys
 import importlib
 import subprocess
+from subprocess import Popen, PIPE
 
 output = None
 mac = None
 channel = None
+
+
+def run(command):
+    process = Popen(command, stdout=PIPE, shell=True)
+    while True:
+        line = process.stdout.readline().rstrip()
+        if not line:
+            break
+        yield line
 
 def isMAC48Address(inputString):
     if inputString.count(":")!=5:
@@ -25,13 +35,9 @@ try:
         channel = sys.argv[2]
         interface = sys.argv[3]
 
-        cmd = ('sudo airodump-ng -c ' + channel + ' --bssid ' + mac + ' ' + interface)
-
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1)
-        for line in iter(p.stdout.readline, b''):
-            print(line)
-        p.stdout.close()
-        p.wait()
+        # cmd = ('sudo airodump-ng -c ' + channel + ' --bssid ' + mac + ' ' + interface)
+        for path in run("ping -c 5 google.com"):
+            print(path)
 
         # sys.stdout.flush()
     else:
