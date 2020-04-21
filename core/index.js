@@ -3,6 +3,7 @@ const os = require('os-utils')
 const request = require('request')
 const async = require('async')
 const ProgressBar = require('progress')
+import {PythonShell} from 'python-shell';
 
 var dir = './tmp';
 if (!fs.existsSync(dir)){
@@ -115,5 +116,19 @@ export const app = {
         //     }
         //     console.log(stdout);
         // });
+    }
+}
+
+
+export const _$ = {
+    getClients: ( mac ) => {
+        let _$options = {
+            mode: 'text',
+            encoding: 'utf8',
+            scriptPath: `${process.cwd()}/py_scripts/`,
+            args: [mac]
+          };
+          
+        return new PythonShell('network_listen.py', _$options)
     }
 }

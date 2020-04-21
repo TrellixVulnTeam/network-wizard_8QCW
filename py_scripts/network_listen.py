@@ -1,13 +1,42 @@
 import ifcfg
 import os
 import json
-from scapy.all import *
+import sys
+import importlib
 
-def sniff_ap(pkt):
-    if pkt.haslayer(Dot11):
-        if pkt.add3 == 'xx.xx.xx.xx.xx.xx':  ## AP MAC
-            print(pkt.summary())
-        else: pass
-    else: pass
+output = None
+mac = None
+channel = None
+def isMAC48Address(inputString):
+    if inputString.count(":")!=5:
+        return False
+    for i in inputString.split(":"):
+        for j in i:
+            if j>"F" or (j<"A" and not j.isdigit()) or len(i)!=2:
+                return False
+    return True 
 
-sniff(prn=sniff_ap)
+
+try:
+    if (isMAC48Address(sys.argv[1]) & sys.argv[2].isdigit()):
+        mac = sys.argv[1]
+        channel = sys.argv[2]
+        interface = sys.argv[3]
+        os.system('airodump-ng -c ' + channel + ' --bbsid' + mac + ' -w . ' + interface)
+    else:
+        output = {
+        "error": 100,
+        "data": None
+        }
+except Exception:
+    output = {
+        "error": 200,
+        "data": None
+    }
+
+print(json.dumps(output))
+
+
+# ERROR CODES :
+# 100 => Not valid MAC
+# 200 => Not received MAC
