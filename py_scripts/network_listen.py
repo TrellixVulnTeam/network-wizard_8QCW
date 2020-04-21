@@ -3,10 +3,12 @@ import os
 import json
 import sys
 import importlib
+import subprocess
 
 output = None
 mac = None
 channel = None
+
 def isMAC48Address(inputString):
     if inputString.count(":")!=5:
         return False
@@ -22,7 +24,7 @@ try:
         mac = sys.argv[1]
         channel = sys.argv[2]
         interface = sys.argv[3]
-        os.system('airodump-ng -c ' + channel + ' --bbsid' + mac + ' -w . ' + interface)
+        os.system('sudo airodump-ng -c ' + channel + ' --bssid ' + mac + ' ' + interface)
     else:
         output = {
         "error": 100,
@@ -34,9 +36,10 @@ except Exception:
         "data": None
     }
 
+
 print(json.dumps(output))
 
 
 # ERROR CODES :
-# 100 => Not valid MAC
-# 200 => Not received MAC
+# 100 => Not valid values // Check conditional failed
+# 200 => Not received MAC // Exception
