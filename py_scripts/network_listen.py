@@ -35,11 +35,11 @@ try:
         channel = sys.argv[2]
         interface = sys.argv[3]
 
-        # cmd = ('sudo airodump-ng -c ' + channel + ' --bssid ' + mac + ' ' + interface)
-        for path in run("ping -c 5 google.com"):
-            print(path)
+        cmd = ('sudo airodump-ng  --background 0 -c ' + channel + ' --bssid ' + mac + ' ' + interface)
+        for path in run(cmd):
+            print(json.dumps(path))
 
-        # sys.stdout.flush()
+        sys.stdout.flush()
     else:
         output = {
         "error": 100,
