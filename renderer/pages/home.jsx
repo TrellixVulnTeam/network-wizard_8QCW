@@ -20,7 +20,7 @@ let _$options = {
 };
 
 const _$interfaces =  new PythonShell('interfaces.py', _$options)
-const _$wash_listen = new PythonShell('wash_listen.py', _$options)
+// const _$wash_listen = new PythonShell('wash_listen.py', _$options)
 
 
 export default class Home extends React.PureComponent{
