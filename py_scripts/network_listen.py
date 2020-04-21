@@ -24,7 +24,16 @@ try:
         mac = sys.argv[1]
         channel = sys.argv[2]
         interface = sys.argv[3]
-        os.system('sudo airodump-ng -c ' + channel + ' --bssid ' + mac + ' ' + interface)
+
+        cmd = ('sudo airodump-ng -c ' + channel + ' --bssid ' + mac + ' ' + interface)
+
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1)
+        for line in iter(p.stdout.readline, b''):
+            print(line)
+        p.stdout.close()
+        p.wait()
+
+        # sys.stdout.flush()
     else:
         output = {
         "error": 100,
