@@ -121,14 +121,16 @@ export const app = {
 
 
 export const _$ = {
-    getClients: ( mac ) => {
+    getClients: ( callback, payload ) => {
+        if(!payload)return false
+        const { mac, channel, _interface } = payload
         let _$options = {
             mode: 'text',
             encoding: 'utf8',
             scriptPath: `${process.cwd()}/py_scripts/`,
-            args: [mac]
+            args: [mac, channel, _interface]
           };
           
-        return new PythonShell('network_listen.py', _$options)
+        return callback(new PythonShell('network_listen.py', _$options))
     }
 }

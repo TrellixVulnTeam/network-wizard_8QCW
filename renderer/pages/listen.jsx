@@ -22,6 +22,10 @@ export default class Listen extends React.PureComponent {
 
     componentDidMount(){
         this.setState({ clients: this.getClients(), loading: false })
+        const payload = { mac: '', channel: '', interface: '', }
+        core._$.getClients((res)=>{
+
+        })
     }
 
     getClients(){

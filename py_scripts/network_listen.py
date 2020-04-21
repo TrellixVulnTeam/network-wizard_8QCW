@@ -10,7 +10,6 @@ output = None
 mac = None
 channel = None
 
-
 def run(command):
     process = Popen(command, stdout=PIPE, shell=True)
     while True:

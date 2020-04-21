@@ -45,7 +45,8 @@ export default class Home extends React.PureComponent{
     },
     wire_ap: (callback) => {
 
-    }
+    },
+
   }
 
   
@@ -99,6 +100,9 @@ export default class Home extends React.PureComponent{
     
   }
   render(){ 
+    function nt_mac_ha(e){
+      this.setState()
+    }
     return(
       <Content style={{ padding: 48, textAlign: 'center', alignContent: 'center' }}>
         <div className={styles.brand}>
@@ -108,8 +112,8 @@ export default class Home extends React.PureComponent{
         <div>
           <Icons.WifiOutlined /> Select a interface <br/>
           {this.renderInterfaces()}<br/>
-          <Icons.AimOutlined /> Select an AP<br/>
-          <antd.Button onClick={()=> this.toggleSelectAP()}> Select </antd.Button>
+          <Icons.AimOutlined /> Network MAC <br/>
+          <antd.Input placeholder="XX:XX:XX:XX" onChange={(e) => this.setState({ nt_mac: e.value })} />
         </div>
         <br/><br/>
         <Button onClick={()=> Router.push('/listen')}> Start Listen </Button>
