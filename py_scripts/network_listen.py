@@ -12,7 +12,7 @@ channel = None
 interface = None
 
 def run(command):
-    process = Popen(command, stdout=PIPE, shell=True)
+    process = Popen([command, '-u'], stdout=PIPE)
     while True:
         line = process.stdout.readline().rstrip()
         if not line:
@@ -35,7 +35,7 @@ try:
         channel = sys.argv[2]
         interface = sys.argv[3]
 
-        cmd = ('sudo airodump-ng  --background 0 -c ' + channel + ' --bssid ' + mac + ' ' + interface)
+        cmd = ('sudo airodump-ng  --background 0 -c ' + channel + ' --bssid ' + mac + ' -w out --output-format csv ' + interface)
         p = subprocess.Popen(cmd, stdout=PIPE, shell=True)
         out = p.stdout.read()
         
