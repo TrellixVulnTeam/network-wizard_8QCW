@@ -8,6 +8,9 @@ import * as Icons from '@ant-design/icons'
 import * as core from '../../core'
 import os from 'os-utils'
 import { Layout,Result,Button,message } from 'antd';
+
+import Listen from './listen'
+
 const { Header,Content } = Layout;
 
 import 'antd/dist/antd.css';
@@ -25,7 +28,11 @@ const _$interfaces =  new PythonShell('interfaces.py', _$options)
 
 export default class Home extends React.PureComponent{
   state = {
-    select_visible: false,
+    nt_mac: null,
+    nt_ch: null,
+    nt_save: false,
+
+    active_frag: null,
     using: null,
     loading: true,
     interfaces: null,
@@ -73,7 +80,7 @@ export default class Home extends React.PureComponent{
       }
       return (
         <antd.Select style={{ width: 300 }} defaultValue={this.state.using} onChange={handleChange}>
-             {data.map(item => (<Option key={item.interface}>{isdefault(item.interface)} {item.mac} | {item.ip} </Option>))}
+             {data.map(item => (<Option key={item.interface}>{isdefault(item.interface)} {item.mac} </Option>))}
         </antd.Select>
       )
     } catch (error) {
@@ -99,10 +106,97 @@ export default class Home extends React.PureComponent{
     }
     
   }
-  render(){ 
-    function nt_mac_ha(e){
-      this.setState()
+
+
+  profile = {
+    new: () => {
+      const { nt_mac, nt_ch, using, nt_save } = this.state
+      if(nt_mac && nt_ch){
+      const n = new Date
+      const a = { mac: nt_mac, channel: nt_ch, interface: using, key: n.getTime() }
+      if(nt_save){
+        try {
+          const s_profiles = JSON.parse(localStorage.getItem('profiles'))
+          let ct = []
+        
+          if(s_profiles){
+            ct = s_profiles
+          }
+          
+          const nw = ct.concat(a)
+          localStorage.setItem('profiles', JSON.stringify(nw))
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      localStorage.setItem('active_profile', JSON.stringify(a))
+      this.setState({ active_frag: <Listen profile={a} /> })
+      return true
+      }
+      return false
+    },
+    resume: () => {
+      try {
+        const ac_profile = JSON.parse(localStorage.getItem('active_profile'));
+        const a = { mac: ac_profile.mac, channel: ac_profile.channel, interface: ac_profile.interface }
+        this.setState({ active_frag: <Listen profile={a} /> })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    end: () => {
+      this.setState({ active_frag: null })
+      localStorage.removeItem('active_profile')
     }
+
+  }
+
+  startListen(){
+    const ac_profile = localStorage.getItem('active_profile');
+    const p_new = () => this.profile.new()
+    const p_res = () => this.profile.resume()
+    if(ac_profile){
+      return antd.Modal.confirm({
+        title: 'Profile Detected',
+        content: (
+          <div>
+            <p>It seems that there is still an active profile.</p>
+            <p>Do you want to resume it or create a new one?</p>
+            <p> {ac_profile} </p>
+          </div>
+        ),
+        okText: "New",
+        cancelText: "Resume",
+        onOk() {
+          p_new()
+        },
+        onCancel(){
+          p_res()
+        },
+      });
+    }
+    return this.profile.new()
+  }
+
+  render(){ 
+    const nt_mac_ha = (e) =>{
+      this.setState({ nt_mac: e.target.value })
+    }
+    const nt_ch_ha = (e) =>{
+      this.setState({ nt_ch: e })
+    }
+    const nt_save_ha = (e) =>{
+      console.log(e.target.checked)
+      this.setState({ nt_save: e.target.checked })
+    }
+
+    if (this.state.active_frag){
+      return <>
+        <antd.Button onClick={() => this.profile.end() } > Exit </antd.Button>
+        <React.Fragment>{this.state.active_frag}</React.Fragment>
+      </>
+    }
+
     return(
       <Content style={{ padding: 48, textAlign: 'center', alignContent: 'center' }}>
         <div className={styles.brand}>
@@ -112,25 +206,18 @@ export default class Home extends React.PureComponent{
         <div>
           <Icons.WifiOutlined /> Select a interface <br/>
           {this.renderInterfaces()}<br/>
-          <Icons.AimOutlined /> Network MAC <br/>
-          <antd.Input placeholder="XX:XX:XX:XX" onChange={(e) => this.setState({ nt_mac: e.value })} />
+         
+          <antd.Input.Group compact>
+              <Icons.AimOutlined /> MAC <antd.Input  styles={{ width: 300 }} placeholder="XX:XX:XX:XX" onChange={nt_mac_ha} />
+              Channel <antd.InputNumber min={1} max={10} defaultValue={this.state.nt_ch} onChange={nt_ch_ha} />
+          </antd.Input.Group>
         </div>
-        <br/><br/>
-        <Button onClick={()=> Router.push('/listen')}> Start Listen </Button>
-        <Button onClick={()=> core.app.setup()}> Install Python3 </Button>
         <br/>
+        <Button onClick={()=> this.startListen()}> Start Listen </Button><br/><br/>
+        <antd.Checkbox onChange={nt_save_ha}> Save Profile? </antd.Checkbox>
+        <br/><br/>
         {os.platform()}
-        <antd.Drawer
-          title="Select an AP"
-          placement="right"
-          closable={true}
-          onClose={() => this.toggleSelectAP()}
-          visible={this.state.select_visible}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </antd.Drawer>
+    
       </Content>
  
     )

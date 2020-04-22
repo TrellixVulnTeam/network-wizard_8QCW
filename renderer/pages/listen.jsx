@@ -15,17 +15,22 @@ var os 	= require('os-utils');
 
 export default class Listen extends React.PureComponent {
     state = {
+        profile: this.props.profile,
         loading: true,
         clients: [{}],
-        deauth: [{}]
+        deauth: [{}],
+        response: null
     }
 
     componentDidMount(){
+        const { profile } = this.state
         this.setState({ clients: this.getClients(), loading: false })
-        const payload = { mac: '', channel: '', interface: '', }
-        core._$.getClients((res)=>{
 
-        })
+        const payload = { mac: profile.mac, channel: profile.channel, _interface: profile.interface, }
+        core._$.getClients((res)=>{
+            console.log(res)
+            this.setState({ response: res })
+        },payload)
     }
 
     getClients(){
@@ -75,12 +80,12 @@ export default class Listen extends React.PureComponent {
     }
 
     render(){
+        console.log('Active profile ', this.state.profile)
         if (!this.state.loading) {
             return(
                 <div>
-                    <antd.Button onClick={() => Router.push('/main')} > Main </antd.Button>
-                    <h2>Your Network</h2>
-                    
+                    <h3><Icons.WifiOutlined /> Network <antd.Tag color="volcano">AD {this.state.profile.mac} | CH {this.state.profile.channel}  </antd.Tag> </h3>
+                    <h3><Icons.GlobalOutlined /> Interface <antd.Tag > {this.state.profile.interface} </antd.Tag></h3>
                     <h2><Icons.ApartmentOutlined /> Connected</h2>
                     {this.renderClientsConnected()}
                     <h2><Icons.ApiOutlined /> Disconnected</h2>

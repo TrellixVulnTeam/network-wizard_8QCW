@@ -131,6 +131,10 @@ export const _$ = {
             args: [mac, channel, _interface]
           };
           
-        return callback(new PythonShell('network_listen.py', _$options))
+        const cmd = new PythonShell('network_listen.py', _$options)
+        cmd.on('message', function (message) {
+            if (!message) return false
+            return callback(message)
+        });
     }
 }
