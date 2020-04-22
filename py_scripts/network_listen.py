@@ -9,6 +9,7 @@ from subprocess import Popen, PIPE
 output = None
 mac = None
 channel = None
+interface = None
 
 def run(command):
     process = Popen(command, stdout=PIPE, shell=True)
@@ -35,10 +36,16 @@ try:
         interface = sys.argv[3]
 
         cmd = ('sudo airodump-ng  --background 0 -c ' + channel + ' --bssid ' + mac + ' ' + interface)
-        for path in run(cmd):
-            print(json.dumps(path))
+        p = subprocess.Popen(cmd, stdout=PIPE, shell=True)
+        out = p.stdout.read()
+        
+        
+        output = {
+            "error": '0',
+            "data": out
+        }
 
-        sys.stdout.flush()
+        #sys.stdout.flush()
     else:
         output = {
         "error": 100,

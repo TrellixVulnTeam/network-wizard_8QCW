@@ -80,7 +80,6 @@ export default class Listen extends React.PureComponent {
     }
 
     render(){
-        console.log('Active profile ', this.state.profile)
         if (!this.state.loading) {
             return(
                 <div>
