@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
           <meta charSet='utf-8' />
         </Head>
         <body>
+          <div id="app_modals"></div>
           <Main />
           <NextScript />
         </body>

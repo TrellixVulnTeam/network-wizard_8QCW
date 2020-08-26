@@ -1,0 +1,37 @@
+[
+    {
+        "id": "python_2.7.18",
+        "turn": 1,
+        "method": "osExec",
+        "osExec": {
+            "win32": {
+                "type": "httpDownload",
+                "httpDownload": "https://www.python.org/ftp/python/2.7.18/python-2.7.18.amd64.msi"
+            },
+            "linux": {
+                "type": "apt",
+                "apt": "python_2.7.18"
+            }
+        }
+    },
+    {
+        "id": "hpilo",
+        "method": "pip"
+    },
+    {
+        "id": "appdirs",
+        "method": "pip"
+    },
+    {
+        "id": "packaging",
+        "method": "pip"
+    },
+    {
+        "id": "pyparsing",
+        "method": "pip"
+    },
+    {
+        "id": "six",
+        "method": "pip"
+    }
+]

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "network-wizard",
+  "name": "ilo_manager",
   "description": "Manage clients like a wizard!",
   "version": "0.2.0",
   "author": "srgooglo",
@@ -21,12 +21,13 @@
     "os-utils": "0.0.14",
     "progress": "^2.0.3",
     "python-shell": "^1.0.8",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "stack-trace": "0.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@zeit/next-css": "^1.0.1",
-    "antd": "^4.0.4",
+    "antd": "^4.6.1",
     "babel-loader": "^8.1.0",
     "babel-plugin-import": "^1.13.0",
     "electron": "^8.2.4",

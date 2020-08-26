@@ -3,12 +3,9 @@ import * as antd from 'antd'
 import * as Icons from '@ant-design/icons'
 import 'antd/dist/antd.css';
 import './setup.css'
-import * as core from '../../core'
-import * as deps from './deps.js'
 
-export default class Setup extends React.PureComponent{
+export default class SetupComponent extends React.PureComponent{
     state ={
-        deps: deps.depsList,
         type: 'downloading',
         turn: 1,
         last: null,
@@ -25,12 +22,7 @@ export default class Setup extends React.PureComponent{
 
     trylast(){
         this.setState({ turn: this.state.last, error: false })
-        this.__setup()
     }
-
-    isInstalled(key){
-        return deps.SettingStoragedValue(key)
-    }  
 
     next(){
         try {
@@ -49,32 +41,6 @@ export default class Setup extends React.PureComponent{
         this.setState({ turn: (this.state.turn--), percent: (this.state.percent - 10) })
     }
 
-    async __setup() {
-        switch (this.state.turn) {
-            case 1:{
-                if (!this.isInstalled(1)) {
-                    this.setState({ title: 'python3' })
-                    return core._deps_install.python3((err,done)=>{
-                        if (err){
-                            console.log(`Error installing => ${this.state.title} | 0x${this.state.turn}`)
-                            return this.setState({ error: true })
-                        }
-                        return this.next()
-                    })
-                }
-                return this.next
-            }
-            case 2:{
-                this.end_Setup()
-                return true
-            }
-            default:
-                return false
-        }
-    }
-    componentDidMount(){
-        this.__setup()
-    }
     render(){
         return(
             <div className="setup_wrapper">
